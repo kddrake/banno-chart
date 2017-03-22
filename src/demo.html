@@ -1,0 +1,105 @@
+<link rel="import" href="jha-design/jha-container.html">
+<link rel="import" href="jha-design/jha-card.html" />
+<link rel="import" href="jha-chart.html">
+<dom-module id="jha-chart-demo">
+  <template>
+    <style>
+      jha-card {
+        font-family: -apple-system, system-ui,'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        color: #455564;
+      }
+      article {
+        padding: 16px 24px 16px 0;
+        box-sizing: border-box;
+        display: block;
+      }
+    </style>
+    <jha-container>
+      <jha-card>
+        <header>Unique logins</header>
+        <article style="position: relative">
+          <jha-chart type="line" config="[[config]]"></jha-chart>
+        </article>
+        <footer></footer>
+      </jha-card>
+    </jha-container>
+  </template>
+  <script>
+  (() => {
+    'use strict';
+    customElements.define('jha-chart-demo', class extends Polymer.Element {
+      static get is() { return 'jha-chart-demo'; }
+      constructor() {
+        super();
+
+        this.config = {
+          data: {
+            labels: this._createLast30DaysLabels(),
+            datasets: [{
+              data: this._createLast30DaysData(),
+              fill: true,
+              lineTension: 0,
+              backgroundColor: 'rgba(58, 174, 218, 0.16)',
+              borderColor: 'rgb(58, 174, 218)',
+              borderWidth: 2,
+              pointBorderColor: 'rgb(58, 174, 218)',
+              pointBackgroundColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: 5
+
+            }]
+          },
+          options: {
+            // Needs to be true in order to fill container.
+            // Currently won't show without being false.
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+              yAxes: [{
+                gridLines: {
+                  drawBorder: false
+                },
+                ticks: {
+                  beginAtZero: true,
+                  padding: 20
+                }
+              }],
+              xAxes: [{
+                gridLines: {
+                  display: false,
+                  color: 'rgba(0,0,0,0)',
+                  drawBorder: false
+                },
+                ticks: {
+                  autoSkip: false,
+                  reverse: true,
+                  callback: function(value, index, values) {
+                    return index % 7 === 0 ? value : '';
+                  },
+                  maxRotation: 0
+                }
+              }]
+            },
+          }
+        }
+      }
+      _createLast30DaysLabels() {
+        let last30Days = [];
+        for (let i = 0; i < 30; i++) {
+          last30Days.push(moment().startOf('day').subtract(i, 'days').format('MMM D'));
+        }
+        return last30Days;
+      }
+      _createLast30DaysData() {
+        let last30Days = [];
+        let min = Math.ceil(0);
+        let max = Math.floor(3069);
+        for (let i = 0; i < 30; i++) {
+          last30Days.push(Math.floor(Math.random() * (max - min + 1)) + min);
+        }
+        return last30Days;
+      }
+    });
+  })(window.customElements);
+  </script>
+</dom-module>

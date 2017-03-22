@@ -1,0 +1,52 @@
+<dom-module id="jha-chart">
+  <template>
+    <canvas id="chart" height="" width=""></canvas>
+  </template>
+  <script>
+  (() => {
+    'use strict';
+
+    class JhaChart extends Polymer.Element {
+      static get is() { return 'jha-chart'; }
+      static get properties() {
+        return {
+          type: { type: String },
+          config: { type: Object }
+        }
+      }
+      static get observers() {
+        return ['_typeChanged()', '_configChanged()']
+      }
+      constructor() {
+        super();
+        this._setChartDefaults();
+      }
+      connectedCallback() {
+        super.connectedCallback();
+        this._setHeightAndWidth();
+        this._createChart();
+      }
+      disconnectedCallback() {
+        super.disconnectedCallback();
+      }
+      _setChartDefaults() {
+        Chart.defaults.global.defaultFontFamily = '-apple-system, system-ui,"Segoe UI", Roboto, "Helvetica Neue", sans-serif';
+        Chart.defaults.global.fontSize = '14px';
+        Chart.defaults.global.lineHeight = '1.5';
+        Chart.defaults.global.color = '#6b757b';
+        Chart.defaults.global.legend.display = false;
+      }
+      _createChart() {
+        let ctx = this.shadowRoot.getElementById('chart');
+        let chart = new Chart(ctx, {
+          type: this.type,
+          data: this.config.data,
+          options: this.config.options
+        });
+      }
+    }
+
+    customElements.define(JhaChart.is, JhaChart);
+  })(window.customElements);
+  </script>
+</dom-module>
