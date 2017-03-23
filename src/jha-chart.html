@@ -1,52 +1,58 @@
-<dom-module id="jha-chart">
+<dom-module id="banno-chart">
   <template>
-    <canvas id="chart" height="" width=""></canvas>
+    <div style="height: [[_setDivHeight()]]px;">
+      <canvas id="chart"></canvas>
+    </div>
   </template>
   <script>
   (() => {
     'use strict';
 
-    class JhaChart extends Polymer.Element {
-      static get is() { return 'jha-chart'; }
+    class BannoChart extends Polymer.Element {
+      static get is() { return 'banno-chart'; }
       static get properties() {
         return {
-          type: { type: String },
           config: { type: Object }
         }
       }
       static get observers() {
-        return ['_typeChanged()', '_configChanged()']
+        return ['_configChanged()'];
       }
       constructor() {
         super();
-        this._setChartDefaults();
       }
       connectedCallback() {
         super.connectedCallback();
-        this._setHeightAndWidth();
+        this._setChartDefaults();
         this._createChart();
       }
       disconnectedCallback() {
         super.disconnectedCallback();
       }
+      _setDivHeight() {
+        // Not sure what to do about this.
+        return 200;
+      }
       _setChartDefaults() {
+        Chart.defaults.global.defaultFontColor = '#6b757b';
         Chart.defaults.global.defaultFontFamily = '-apple-system, system-ui,"Segoe UI", Roboto, "Helvetica Neue", sans-serif';
-        Chart.defaults.global.fontSize = '14px';
-        Chart.defaults.global.lineHeight = '1.5';
-        Chart.defaults.global.color = '#6b757b';
+        Chart.defaults.global.defaultFontSize = 14;
         Chart.defaults.global.legend.display = false;
       }
       _createChart() {
+        this.config.data = chartConfigService.setDataDefaults(this.config.data);
+        this.config.options = chartConfigService.setOptionsDefaults(this.config.options);
+
         let ctx = this.shadowRoot.getElementById('chart');
         let chart = new Chart(ctx, {
-          type: this.type,
+          type: this.config.type,
           data: this.config.data,
           options: this.config.options
         });
       }
     }
 
-    customElements.define(JhaChart.is, JhaChart);
+    customElements.define(BannoChart.is, BannoChart);
   })(window.customElements);
   </script>
 </dom-module>

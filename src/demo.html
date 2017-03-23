@@ -1,7 +1,7 @@
 <link rel="import" href="jha-design/jha-container.html">
 <link rel="import" href="jha-design/jha-card.html" />
 <link rel="import" href="jha-chart.html">
-<dom-module id="jha-chart-demo">
+<dom-module id="banno-chart-demo">
   <template>
     <style>
       jha-card {
@@ -18,68 +18,24 @@
       <jha-card>
         <header>Unique logins</header>
         <article style="position: relative">
-          <jha-chart type="line" config="[[config]]"></jha-chart>
+          <banno-chart config="[[config]]"></jha-chart>
         </article>
-        <footer></footer>
       </jha-card>
     </jha-container>
   </template>
   <script>
   (() => {
     'use strict';
-    customElements.define('jha-chart-demo', class extends Polymer.Element {
-      static get is() { return 'jha-chart-demo'; }
+    customElements.define('banno-chart-demo', class extends Polymer.Element {
+      static get is() { return 'banno-chart-demo'; }
       constructor() {
         super();
 
         this.config = {
+          type: 'line',
           data: {
             labels: this._createLast30DaysLabels(),
-            datasets: [{
-              data: this._createLast30DaysData(),
-              fill: true,
-              lineTension: 0,
-              backgroundColor: 'rgba(58, 174, 218, 0.16)',
-              borderColor: 'rgb(58, 174, 218)',
-              borderWidth: 2,
-              pointBorderColor: 'rgb(58, 174, 218)',
-              pointBackgroundColor: '#ffffff',
-              pointBorderWidth: 2,
-              pointRadius: 5
-
-            }]
-          },
-          options: {
-            // Needs to be true in order to fill container.
-            // Currently won't show without being false.
-            responsive: false,
-            maintainAspectRatio: false,
-            scales: {
-              yAxes: [{
-                gridLines: {
-                  drawBorder: false
-                },
-                ticks: {
-                  beginAtZero: true,
-                  padding: 20
-                }
-              }],
-              xAxes: [{
-                gridLines: {
-                  display: false,
-                  color: 'rgba(0,0,0,0)',
-                  drawBorder: false
-                },
-                ticks: {
-                  autoSkip: false,
-                  reverse: true,
-                  callback: function(value, index, values) {
-                    return index % 7 === 0 ? value : '';
-                  },
-                  maxRotation: 0
-                }
-              }]
-            },
+            datasets: [{ data: this._createLast30DaysData() }]
           }
         }
       }
