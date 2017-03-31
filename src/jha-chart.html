@@ -42,6 +42,8 @@
       _createChart() {
         this.config.data = chartConfigService.setDataDefaults(this.config.data);
         this.config.options = chartConfigService.setOptionsDefaults(this.config.options);
+        //Only running to test
+        chartConfigService._setDefaults(this.config);
 
         let ctx = this.shadowRoot.getElementById('chart');
         let chart = new Chart(ctx, {
