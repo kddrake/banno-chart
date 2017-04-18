@@ -62,8 +62,8 @@
       }
       _createChart() {
         let chartConfig = defaultConfig[this.customConfig.type];
-        chartConfig = this._objectDeepMerge(chartConfig, this.customConfig);
-
+        chartConfig = this._objectDeepMerge(this.customConfig, chartConfig);
+        console.log(chartConfig);
         let ctx = this.shadowRoot.getElementById('chart');
         let chart = new Chart(ctx, {
           type: chartConfig.type,
