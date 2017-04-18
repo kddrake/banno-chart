@@ -12,9 +12,15 @@ const defaultConfig = {
         pointBackgroundColor: '#ffffff',
         pointBorderWidth: 2
       }, {
+        lineTension: 0,
+        fill: true,
         backgroundColor: 'rgba(103, 189, 72, .16)',
         borderColor: 'rgb(103,189,72)',
+        borderWidth: 2,
+        pointRadius: 5,
         pointBorderColor: 'rgb(103,189,72)',
+        pointBackgroundColor: '#ffffff',
+        pointBorderWidth: 2
       }]
     },
     options: {
@@ -40,7 +46,7 @@ const defaultConfig = {
           }
         }]
       }
-    }  
+    }
   }
 }
 

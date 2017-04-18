@@ -1,3 +1,4 @@
+<script src="./default-config.service.js"></script>
 <dom-module id="banno-chart">
   <template>
     <div style="height: [[_setDivHeight()]]px;">
@@ -12,7 +13,7 @@
       static get is() { return 'banno-chart'; }
       static get properties() {
         return {
-          config: { type: Object }
+          customConfig: { type: Object }
         }
       }
       static get observers() {
@@ -33,6 +34,26 @@
         // Not sure what to do about this.
         return 200;
       }
+      _objectDeepMerge(target, ...sources) {
+        const _isObject = (value) => {
+          return (value && typeof value === 'object' && (!Array.isArray(value) || (Array.isArray(value) && typeof value[0] === 'object')) && value !== null);
+        }
+
+        if (!sources.length) return target;
+          const source = sources.shift();
+          if (_isObject(target) && _isObject(source)) {
+            for (const key in source) {
+              if (_isObject(source[key])) {
+                if (!target[key]) Object.assign(target, { [key]: {} });
+                this._objectDeepMerge(target[key], source[key]);
+              } else {
+                Object.assign(target, { [key]: source[key] });
+              }
+            }
+          }
+
+        return this._objectDeepMerge(target, ...sources);
+      }
       _setChartDefaults() {
         Chart.defaults.global.defaultFontColor = '#6b757b';
         Chart.defaults.global.defaultFontFamily = '-apple-system, system-ui,"Segoe UI", Roboto, "Helvetica Neue", sans-serif';
@@ -40,16 +61,14 @@
         Chart.defaults.global.legend.display = false;
       }
       _createChart() {
-        this.config.data = chartConfigService.setDataDefaults(this.config.data);
-        this.config.options = chartConfigService.setOptionsDefaults(this.config.options);
-        //Only running to test
-        chartConfigService._setDefaults(this.config);
+        let chartConfig = defaultConfig[this.customConfig.type];
+        chartConfig = this._objectDeepMerge(chartConfig, this.customConfig);
 
         let ctx = this.shadowRoot.getElementById('chart');
         let chart = new Chart(ctx, {
-          type: this.config.type,
-          data: this.config.data,
-          options: this.config.options
+          type: chartConfig.type,
+          data: chartConfig.data,
+          options: chartConfig.options
         });
       }
     }

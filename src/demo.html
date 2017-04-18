@@ -18,7 +18,7 @@
       <jha-card>
         <header>Unique logins</header>
         <article style="position: relative">
-          <banno-chart config="[[config]]"></jha-chart>
+          <banno-chart custom-config="[[customConfig]]"></jha-chart>
         </article>
       </jha-card>
     </jha-container>
@@ -31,11 +31,11 @@
       constructor() {
         super();
 
-        this.config = {
+        this.customConfig = {
           type: 'line',
           data: {
             labels: this._createLast30DaysLabels(),
-            datasets: [{ data: this._createLast30DaysData() }]
+            datasets: [{ data: this._createLast30DaysData() }, { data: this._createLast30DaysData() }]
           }
         }
       }

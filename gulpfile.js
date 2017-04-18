@@ -8,16 +8,11 @@ gulp.task('clean:demo', function() {
 });
 
 gulp.task('copy:components', function() {
-  gulp.src(['./src/*.html'])
+  gulp.src(['./src/*'])
     .pipe(gulp.dest('./demo/components/'));
   gulp.src(['./node_modules/@banno/jha-design-components/cards/jha-card.html',
             './node_modules/@banno/jha-design-components/container/jha-container.html'])
     .pipe(gulp.dest('./demo/components/jha-design'));
-});
-
-gulp.task('copy:services', function() {
-  gulp.src(['./src/services/*.js'])
-    .pipe(gulp.dest('./demo/services'));
 });
 
 gulp.task('copy:libs', function() {
@@ -34,5 +29,5 @@ gulp.task('watch', function() {
 
 gulp.task('serve', serve('./demo'));
 gulp.task('clean', function() { gulp.start('clean:demo'); });
-gulp.task('copy', ['clean:demo'], function() { gulp.start('copy:components', 'copy:services', 'copy:libs'); });
+gulp.task('copy', ['clean:demo'], function() { gulp.start('copy:components', 'copy:libs'); });
 gulp.task('default', ['clean', 'copy', 'serve', 'watch']);
